@@ -8,7 +8,7 @@
         <h3>Chapters</h3>
         <div
             class="space-y-1 mb-4 flex flex-col"
-            v-for="(chapter, index) in course.chapters"
+            v-for="(chapter) in course.chapters"
             :key="chapter.slug"
         >
           <NuxtLink
@@ -40,7 +40,6 @@
 
 <script setup>
 const course = useCourse();
-debugger;
 </script>
 
 <style lang="scss" scoped>

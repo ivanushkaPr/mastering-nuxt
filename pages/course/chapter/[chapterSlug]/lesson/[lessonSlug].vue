@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="mt-0 uppercase font-bold text-slate-400 mb-1">
+    <p class="mt-0 uppercase font-bold text-slate-400 mb-1 w-3/4">
       Lesson {{ chapter.number }} - {{ lesson.number }}
     </p>
     <h2 class="my-0">{{ lesson.title }}</h2>
@@ -25,18 +25,16 @@
         :videoId="lesson.videoId"
     />
     <p class="mb-16 mt-16">{{ lesson.text }}</p>
-    <client-only>
-      <LessonCompleteButton
+      <LessonCompleteBtn
           :model-value="isLessonComplete"
           @update:model-value="toggleComplete"
       />
-    </client-only>
   </div>
 </template>
 
 
 <script setup>
-import LessonCompleteButton from "~/components/LessonCompleteButton.client.vue";
+import LessonCompleteButton from "~/components/LessonCompleteBtn.client.vue";
 
 const course = useCourse();
 const route = useRoute();
