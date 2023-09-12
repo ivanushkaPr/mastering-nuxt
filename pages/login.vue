@@ -19,7 +19,7 @@ const { title } = useCourse();
 const user = useSupabaseUser()
 const { auth } = useSupabaseClient()
 debugger;
-const redirectTo = `http://localhost:3000/confirm`
+const redirectTo = `http://localhost:3000/`
 
 watchEffect(() => {
   if (user.value) {

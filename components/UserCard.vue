@@ -11,7 +11,6 @@
       <div class="font-medium">{{ name }}</div>
       <button
           class="text-sm underline text-slate-500"
-          @click="logout"
       >
         Log out
       </button>

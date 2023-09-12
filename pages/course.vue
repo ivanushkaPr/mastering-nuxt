@@ -1,16 +1,14 @@
 <template>
   <div>
-
-    <div class="prose mb-12">
-      <h1>
-        <span class="font-medium">
-          Course:
-          <span class="font-bold">
-            {{ title }}
-          </span>
+    <div class="mb-4 flex justify-between items-center w-full">
+      <h1 class="text-3xl">
+        <span class="medium">
+          <span class="font-bold">{{title}}</span>
         </span>
       </h1>
+      <UserCard/>
     </div>
+
 
     <div class="flex flex-row justify-center flex-grow">
       <div
