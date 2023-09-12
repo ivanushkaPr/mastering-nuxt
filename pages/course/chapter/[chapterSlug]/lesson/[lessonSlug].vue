@@ -38,35 +38,39 @@ const course = useCourse();
 const route = useRoute();
 
 definePageMeta({
-  validate({params}) {
+  middleware: [function( {params}, from) {
     const course = useCourse();
     const chapter = course.chapters.find(
         (chapter) => chapter.slug === params.chapterSlug
     );
 
     if (!chapter) {
-      return createError({
+      return abortNavigation(createError({
         statusCode: 404,
         message: 'Chapter not found'
-      })
+      }));
     }
 
-    debugger;
     const lesson = chapter.lessons.find(
         (lesson) => lesson.slug === params.lessonSlug
     );
 
     if (!lesson) {
-      return createError({
+      return abortNavigation(createError({
         statusCode: 404,
         message: 'lesson not found',
-      })
+      }));
     }
 
+  },
+    function(to, from) {
+      const user = useSupabaseUser();
 
-
-    return true;
-  }
+      if (!user.value) {
+        return navigateTo('/login');
+      }
+    },
+  ],
 })
 
 const chapter = computed(() => {
