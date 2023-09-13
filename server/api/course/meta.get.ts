@@ -1,30 +1,13 @@
 import {
     Course,
     Chapter,
+    CourseMeta,
+    OutlineChapter,
+    OutlineLesson,
 } from '~/types/course';
-
-course as Course;
-
 import course from '~/server/courseData';
 
-type OutlineBase = {
-    title: string;
-    slug: string;
-    number: number;
-}
-
-type OutlineLesson = OutlineBase & {
-    path: string;
-}
-
-type OutlineChapter = OutlineBase & {
-    lessons: OutlineLesson[];
-}
-
-type CourseMeta = {
-    title: String,
-    chapters: OutlineChapter[],
-}
+course as Course;
 
 export default defineEventHandler((event): CourseMeta => {
     const outline: OutlineChapter[] = course.chapters.reduce(

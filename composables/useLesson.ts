@@ -4,5 +4,5 @@ export default async (
     chapterSlug: string,
     lessonSlug: string,
 )=> {
-    return useFetchWithCache<LessonWithPath>(`/api/course/chapter/${chapterSlug}/lesson/${lessonSlug}`);
+    return await useFetchWithCache<LessonWithPath>(`/api/course/chapter/${chapterSlug}/lesson/${lessonSlug}`);
 }

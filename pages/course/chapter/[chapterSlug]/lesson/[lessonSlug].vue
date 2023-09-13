@@ -34,16 +34,16 @@
 
 
 <script setup>
-const course = useCourse();
+const course = await useCourse();
 const route = useRoute();
 
 const { chapterSlug, lessonSlug } = route.params;
 const lesson = await useLesson(chapterSlug, lessonSlug);
 
 definePageMeta({
-  middleware: [function( {params}, from) {
-    const course = useCourse();
-    const chapter = course.chapters.find(
+  middleware: [async function( {params}, from) {
+    const course = await useCourse();
+    const chapter = course.value.chapters.find(
         (chapter) => chapter.slug === params.chapterSlug
     );
 
@@ -70,13 +70,13 @@ definePageMeta({
 })
 
 const chapter = computed(() => {
-  return course.chapters.find((chapter) => {
+  return course.value.chapters.find((chapter) => {
     return chapter.slug === route.params.chapterSlug;
   })
 });
 
 const title = computed(() => {
-  return chapter.value.title + ' - ' + lesson.value.title;
+  return `${lesson.value.title} - ${course.value.title}`;
 })
 
 useHead({
