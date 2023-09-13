@@ -37,6 +37,9 @@
 const course = useCourse();
 const route = useRoute();
 
+const { chapterSlug, lessonSlug } = route.params;
+const lesson = await useLesson(chapterSlug, lessonSlug);
+
 definePageMeta({
   middleware: [function( {params}, from) {
     const course = useCourse();
@@ -71,27 +74,6 @@ const chapter = computed(() => {
     return chapter.slug === route.params.chapterSlug;
   })
 });
-
-if (!chapter.value) {
-  throw createError({
-    statusCode: 404,
-    message: 'chapter not found',
-  })
-}
-
-const lesson = computed(() => {
-  return chapter.value.lessons.find((lesson) => {
-    return lesson.slug === route.params.lessonSlug;
-  })
-})
-
-if (!lesson.value) {
-  throw createError({
-    statusCode: 404,
-    message: 'lesson not found',
-  })
-}
-
 
 const title = computed(() => {
   return chapter.value.title + ' - ' + lesson.value.title;
