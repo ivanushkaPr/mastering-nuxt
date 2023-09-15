@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 export default defineEventHandler(async (event) => {
     const { chapterSlug, lessonSlug } = event.context.params;
 
-    const lesson = await  prisma.lesson.findFirst({
+    const lesson = await prisma.lesson.findFirst({
         where: {
             slug: lessonSlug,
             Chapter: {
