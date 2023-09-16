@@ -13,10 +13,11 @@ export const useCourseProgress = defineStore(
             if (initialized.value) return;
             initialized.value = true;
 
+            debugger;
             const { data: userProgress } =
                 await useFetch<CourseProgress>(
                     '/api/user/progress',
-                    { headers: useRequestHeaders(['cookie']) }
+                    // { headers: useRequestHeaders(['cookie']) }
                 );
 
             // Update progress value
