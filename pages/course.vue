@@ -1,14 +1,15 @@
 <template>
   <div>
-    <div class="mb-4 flex justify-between items-center w-full">
+    <div
+        class="mb-4 flex justify-between items-center w-full"
+    >
       <h1 class="text-3xl">
-        <span class="medium">
-          <span class="font-bold">{{course.title}}</span>
+        <span class="font-medium">
+          <span class="font-bold">{{ course.title }}</span>
         </span>
       </h1>
-      <UserCard/>
+      <UserCard />
     </div>
-
 
     <div class="flex flex-row justify-center flex-grow">
       <div
@@ -17,9 +18,18 @@
         <h3>Chapters</h3>
         <div
             class="space-y-1 mb-4 flex flex-col"
-            v-for="(chapter) in course.chapters"
+            v-for="(chapter, index) in course.chapters"
             :key="chapter.slug"
         >
+          <h4 class="flex justify-between items-center">
+            {{ chapter.title }}
+            <span
+                v-if="percentageCompleted"
+                class="text-emerald-500 text-sm"
+            >
+              {{ percentageCompleted.chapters[index] }}%
+            </span>
+          </h4>
           <NuxtLink
               v-for="(lesson, index) in chapter.lessons"
               :key="lesson.slug"
@@ -38,55 +48,51 @@
             <span>{{ lesson.title }}</span>
           </NuxtLink>
         </div>
+        <div
+            v-if="percentageCompleted"
+            class="mt-8 text-sm font-medium text-gray-500 flex justify-between items-center"
+        >
+          Course completion:
+          <span> {{ percentageCompleted.course }}% </span>
+        </div>
       </div>
 
       <div class="prose p-12 bg-white rounded-md w-[65ch]">
-        <nuxt-error-boundary>
+        <NuxtErrorBoundary>
           <NuxtPage />
           <template #error="{ error }">
             <p>
-              Oh, no something went wrong with the lesson!
-              <code> {{ error }}</code>
+              Oh no, something went wrong with the lesson!
+              <code>{{ error }}</code>
             </p>
             <p>
               <button
-                class="hover:cursor-pointer bg-gray-500 text-white font-"
-                @click="resetError(error)">
+                  class="hover:cursor-pointer bg-gray-500 text-white font-bold py-1 px-3 rounded"
+                  @click="resetError(error)"
+              >
                 Reset
               </button>
             </p>
           </template>
-        </nuxt-error-boundary>
+        </NuxtErrorBoundary>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useCourseProgress } from '~/stores/courseProgress';
+import { storeToRefs } from 'pinia';
 const course = await useCourse();
 const firstLesson = await useFirstLesson();
 
-const resetError =  async (error) => {
+// Get chapter completion percentages
+const { percentageCompleted } = storeToRefs(
+    useCourseProgress()
+);
+
+const resetError = async (error) => {
   await navigateTo(firstLesson.path);
   error.value = null;
 };
 </script>
-
-<style lang="scss" scoped>
-.course {
-  display: flex;
-  justify-content: space-between;
-}
-
-.course__sidebar {
-  width: 25%;
-  height: 100vh;
-  background-color: red;
-}
-
-.router-link-active {
-  color: green;
-  font-weight: bold;
-}
-
-</style>
