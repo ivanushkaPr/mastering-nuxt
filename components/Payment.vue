@@ -86,6 +86,7 @@ const formStyle = {
 const elements = computed(() => stripe.value?.elements());
 
 const setupStripe = () => {
+  debugger;
   stripe.value = Stripe(config.public.stripeKey);
 
   if (!card.value && elements.value) {
@@ -95,60 +96,60 @@ const setupStripe = () => {
     card.value.mount('#card-element');
   }
 };
-
-const handleSubmit = async () => {
-  if (email.value === '') {
-    return;
-  }
-
-  processingPayment.value = true;
-  let secret;
-
-  try {
-    // Create a PaymentIntent with the order amount and currency
-    const response = await $fetch(
-      '/api/stripe/paymentIntent',
-      {
-        method: 'POST',
-        body: {
-          email: email.value,
-        },
-      }
-    );
-    secret = response;
-  } catch (e) {
-    console.log(e);
-  }
-
-  try {
-    const response = await stripe.value.confirmCardPayment(
-      secret,
-      {
-        payment_method: {
-          card: card.value,
-        },
-        receipt_email: email.value,
-      }
-    );
-
-    if (response.paymentIntent.status === 'succeeded') {
-      success.value = true;
-      paymentIntentId.value = response.paymentIntent.id;
-    }
-  } catch (e) {
-    console.log(e);
-  } finally {
-    processingPayment.value = false;
-  }
-};
-
-const login = async () => {
-  if (!paymentIntentId.value) {
-    return;
-  }
-  const redirectTo = `/linkWithPurchase/${paymentIntentId.value}`;
-  await navigateTo(`/login?redirectTo=${redirectTo}`);
-};
+//
+// const handleSubmit = async () => {
+//   if (email.value === '') {
+//     return;
+//   }
+//
+//   processingPayment.value = true;
+//   let secret;
+//
+//   try {
+//     // Create a PaymentIntent with the order amount and currency
+//     const response = await $fetch(
+//       '/api/stripe/paymentIntent',
+//       {
+//         method: 'POST',
+//         body: {
+//           email: email.value,
+//         },
+//       }
+//     );
+//     secret = response;
+//   } catch (e) {
+//     console.log(e);
+//   }
+//
+//   try {
+//     const response = await stripe.value.confirmCardPayment(
+//       secret,
+//       {
+//         payment_method: {
+//           card: card.value,
+//         },
+//         receipt_email: email.value,
+//       }
+//     );
+//
+//     if (response.paymentIntent.status === 'succeeded') {
+//       success.value = true;
+//       paymentIntentId.value = response.paymentIntent.id;
+//     }
+//   } catch (e) {
+//     console.log(e);
+//   } finally {
+//     processingPayment.value = false;
+//   }
+// };
+//
+// const login = async () => {
+//   if (!paymentIntentId.value) {
+//     return;
+//   }
+//   const redirectTo = `/linkWithPurchase/${paymentIntentId.value}`;
+//   await navigateTo(`/login?redirectTo=${redirectTo}`);
+// };
 
 useHead({
   script: [
